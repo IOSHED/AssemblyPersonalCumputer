@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
+from typing import Type
 
-from backend.api.db.db import async_session_maker
+from api.assembly_pc.repository import AssemblyPCRepository
+from api.db.db import async_session_maker
 
 
 class IUnitOfWork(ABC):
     # Set tree repositories
+    assembly_pc: Type[AssemblyPCRepository]
 
     @abstractmethod
     def __init__(self):
@@ -35,6 +38,7 @@ class UnitOfWork:
         self.session = self.session_factory()
 
         # Set tree repositories
+        self.assembly_pc = AssemblyPCRepository(self.session)
 
     async def __aexit__(self, *args):
         await self.rollback()

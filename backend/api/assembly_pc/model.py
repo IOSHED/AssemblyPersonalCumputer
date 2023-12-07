@@ -8,7 +8,7 @@ from api.db.db import Base
 
 
 class PC(Base):
-    __tablename__ = "PC"
+    __tablename__ = "pc"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     price: Mapped[int] = mapped_column(Integer)

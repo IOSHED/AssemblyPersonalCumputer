@@ -11,9 +11,6 @@ router = APIRouter()
 
 
 @router.post("/", response_model=PCSchema)
-async def assembly_pc(
-    user_data_pc: PCSchemaAdd,
-    uow: UOWDep,
-) -> Any:
+async def assembly_pc(user_data_pc: PCSchemaAdd, uow: UOWDep) -> Any:
     new_pc = await AssemblyPCService.add_pc(uow, user_data_pc)
     return new_pc

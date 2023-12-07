@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from api.assembly_pc.urls import router as router_asembly_pc
 
+
 app = FastAPI(
      title="Assembly PC"
 )

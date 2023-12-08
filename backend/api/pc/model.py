@@ -3,7 +3,7 @@ from typing import Dict
 from sqlalchemy import Integer, JSON
 from sqlalchemy.orm import mapped_column, Mapped
 
-from api.assembly_pc.shemas import PCSchema
+from api.pc.shemas import PCSchema
 from api.db.db import Base
 
 

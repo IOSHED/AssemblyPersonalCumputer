@@ -1,4 +1,4 @@
-from api.assembly_pc.shemas import PCSchemaAdd
+from api.pc.shemas import PCSchemaAdd
 
 
 async def assembly_pc(template_pc: PCSchemaAdd) -> PCSchemaAdd:

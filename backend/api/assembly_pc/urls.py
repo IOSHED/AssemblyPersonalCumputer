@@ -9,8 +9,11 @@ from api.utils.dependencies import UOWDep
 
 router = APIRouter()
 
-
-@router.post("/", response_model=PCSchema)
+# response_model=PCSchema
+@router.post("/")
 async def assembly_pc(user_data_pc: PCSchemaAdd, uow: UOWDep) -> Any:
-    new_pc = await AssemblyPCService.add_pc(uow, user_data_pc)
+    try:
+        new_pc = await AssemblyPCService.add_pc(uow, user_data_pc)
+    except Exception as err:
+        return {"type_error": "Unknown Error", "error": err}
     return new_pc

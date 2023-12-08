@@ -7,6 +7,6 @@ class AssemblyPCService:
     async def add_pc(uow: IUnitOfWork, pc: PCSchemaAdd) -> int:
         pc_dict = pc.model_dump()
         async with uow:
-            pc_id = await uow.assembly_pc.add_one(pc_dict)
+            pc_id = await uow.assembly_pc.add_one(data=pc_dict)
             await uow.commit()
             return pc_id

@@ -10,6 +10,6 @@ class PCSchemaAdd(pydantic.BaseModel):
 
 
 class PCSchema(pydantic.BaseModel):
-    id: int
+    id: int = pydantic.Field(gt=0)
     price: int = pydantic.Field(gt=0)
-    other_components: Dict[str, str]
+    components: Dict[str, str]

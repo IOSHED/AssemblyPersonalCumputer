@@ -9,10 +9,10 @@ from api.utils.dependencies import UOWDep
 
 router = APIRouter()
 
-# response_model=PCSchema
+# TODO create a good except error
 
 
-@router.post("/")
+@router.post("/", response_model=PCSchema)
 async def assembly_pc(user_data_pc: PCSchemaAdd, uow: UOWDep) -> Any:
     try:
         new_pc = await AssemblyPCService.add_pc(uow, user_data_pc)

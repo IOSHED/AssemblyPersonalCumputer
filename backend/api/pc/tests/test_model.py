@@ -4,10 +4,11 @@ from api.pc.shemas import TypeComponentSchema, ComponentSchema, PCSchema
 
 
 def test_type_component():
-    type_component = TypeComponent(name="CPU")
+    type_component = TypeComponent(id=1, name="CPU")
     assert type_component.__repr__() == "TypeComponent(name='CPU')"
     assert type_component.to_read_model() == TypeComponentSchema(
-        name="CPU"
+        id=1,
+        name="CPU",
     )
 
 

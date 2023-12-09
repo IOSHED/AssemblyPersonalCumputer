@@ -65,12 +65,14 @@ class Component(Base):
 class TypeComponent(Base):
     __tablename__ = "type_component"
 
-    name: Mapped[str] = mapped_column(String(255), primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), unique=True)
 
     def __repr__(self) -> str:
         return f"TypeComponent(name={self.name!r})"
 
     def to_read_model(self) -> TypeComponentSchema:
         return TypeComponentSchema(
+            id=self.id,
             name=self.name,
         )

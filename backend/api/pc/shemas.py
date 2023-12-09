@@ -1,15 +1,30 @@
 
-from typing import Union, Dict
+from typing import Dict, List, Union, Any
 
 import pydantic
 
 
+class TypeComponentSchema(pydantic.BaseModel):
+    name: str = pydantic.Field(max_length=255)
+
+
+class ComponentSchema(pydantic.BaseModel):
+    id: int = pydantic.Field(gt=0)
+    price: float = pydantic.Field(gt=0, le=9_999_999)
+    user_rating_other_site: float = pydantic.Field(gt=0, le=10)
+    user_rating: float = pydantic.Field(gt=0, le=10)
+
+    name: str = pydantic.Field(max_length=255)
+    type_component: str = pydantic.Field(max_length=255)
+    specifications: Dict[str, Any]
+
+
 class PCSchemaAdd(pydantic.BaseModel):
-    price: int = pydantic.Field(gt=0)
-    components: Union[Dict[str, str], None] = None
+    price: float = pydantic.Field(gt=0, le=9_999_999)
+    components: Union[List[ComponentSchema], None] = None
 
 
 class PCSchema(pydantic.BaseModel):
     id: int = pydantic.Field(gt=0)
-    price: int = pydantic.Field(gt=0)
-    components: Dict[str, str]
+    price: float = pydantic.Field(gt=0, le=9_999_999)
+    components: List[ComponentSchema]

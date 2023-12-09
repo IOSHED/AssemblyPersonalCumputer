@@ -3,6 +3,8 @@ FROM python:3.8-slim
 WORKDIR /api
 
 COPY ./requirements.txt /api/requirements.txt
+COPY ./migrations /api/migrations
+COPY ./alembic.ini /api/alembic.ini
 
 RUN apt-get update \
     && apt-get install gcc -y \

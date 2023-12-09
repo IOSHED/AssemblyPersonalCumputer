@@ -16,7 +16,7 @@ services:
     volumes:
       - postgres_data_asm_pc:/var/lib/postgresql/data/
     env_file:
-      - ./asm-pc-service/.env-db
+      - ./asm-pc-service/.env
 
   auth_service:
     build: ./auth-service
@@ -35,7 +35,7 @@ services:
     volumes:
       - postgres_data_auth:/var/lib/postgresql/data/
     env_file:
-      - ./auth-service/.env-db
+      - ./auth-service/.env
 
   nginx:
     image: nginx

@@ -9,6 +9,7 @@ class TypeComponentSchemaAdd(pydantic.BaseModel):
 
 
 class TypeComponentSchema(pydantic.BaseModel):
+    id: int = pydantic.Field(gt=0)
     name: str = pydantic.Field(max_length=255)
 
 

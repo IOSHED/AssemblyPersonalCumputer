@@ -42,7 +42,7 @@ class UnitOfWork:
         # Set tree repositories
         self.pc = PCRepository(self.session)
         self.component = ComponentRepository(self.session)
-        self.type_repository = ComponentRepository(self.session)
+        self.type_component = TypeComponentRepository(self.session)
 
     async def __aexit__(self, *args):
         await self.rollback()

@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from api.auth.urls import router as router_auth
+from api.db.db import Base
+
+_Base = Base
 
 
 app = FastAPI(

@@ -1,14 +1,26 @@
 # BACKEND
 
-## Starting backend in local
+## Starting backend
 
+Command for start:
 ```commandline
-cd backend
-python -m venv venv
-pip install -r requirements.txt
-alembic upgrade head 
-uvicorn main:app --reload --host 127.0.0.1 --port 8080
+docker-compose up
 ```
+
+Port nginx: 
+```json
+8080
+```
+
+Command for up migrations: 
+```commandline
+docker-compose exec NAME_SERVICE alembic upgrade head
+```
+
+| name service   | path api             | path docs                 |
+|----------------|----------------------|---------------------------|
+| auth_service   | ```/api/v1/auth```   | ```/api/v1/auth/docs```   |
+| asm_pc_service | ```/api/v1/asm-pc``` | ```/api/v1/asm-pc/docs``` |
 
 ## Migrations alembic
 

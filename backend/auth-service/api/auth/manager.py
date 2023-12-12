@@ -1,4 +1,3 @@
-import uuid
 from typing import Optional, Union, Dict, Any
 
 from fastapi import Depends, Request
@@ -13,7 +12,7 @@ from api.auth.schemas import UserCreate
 SECRET = config.SECRET_VERIFICATION
 
 
-class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
+class UserManager(UUIDIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
     reset_password_token_lifetime_seconds = config.LIFETIME_RESET_PASSWORD

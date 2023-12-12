@@ -1,9 +1,8 @@
-import uuid
 from datetime import datetime
 
 from fastapi import Depends
-from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
-from sqlalchemy import String, Boolean, UUID
+from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase, SQLAlchemyBaseUserTable
+from sqlalchemy import String, Boolean, Integer
 from sqlalchemy.dialects.postgresql import TIMESTAMP
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import mapped_column, Mapped
@@ -11,8 +10,8 @@ from sqlalchemy.orm import mapped_column, Mapped
 from api.db.db import Base, get_async_session
 
 
-class User(SQLAlchemyBaseUserTableUUID, Base):
-    id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
+class User(SQLAlchemyBaseUserTable[int], Base):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False)
     registered_at: Mapped[datetime] = mapped_column(TIMESTAMP, default=datetime.utcnow)

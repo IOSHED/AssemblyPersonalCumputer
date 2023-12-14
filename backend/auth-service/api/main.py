@@ -15,7 +15,6 @@ app = FastAPI(
 app.include_router(
     router_auth,
     prefix="/api/v1/auth",
-    tags=["Auth"],
 )
 
 # All hosts that can access our api

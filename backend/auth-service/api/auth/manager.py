@@ -1,7 +1,7 @@
 from typing import Optional, Union, Dict, Any
 
 from fastapi import Depends, Request
-from fastapi_users import BaseUserManager, UUIDIDMixin, InvalidPasswordException
+from fastapi_users import BaseUserManager, InvalidPasswordException, IntegerIDMixin
 from starlette.responses import Response
 
 from api import config
@@ -12,7 +12,7 @@ from api.auth.schemas import UserCreate
 SECRET = config.SECRET_VERIFICATION
 
 
-class UserManager(UUIDIDMixin, BaseUserManager[User, int]):
+class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
     reset_password_token_lifetime_seconds = config.LIFETIME_RESET_PASSWORD

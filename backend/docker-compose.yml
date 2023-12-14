@@ -17,8 +17,6 @@ services:
       - postgres_data_asm_pc:/var/lib/postgresql/data/
     env_file:
       - ./asm-pc-service/.env
-#    networks:
-#      - postgres
 
   auth_service:
     build: ./auth-service
@@ -38,8 +36,6 @@ services:
       - postgres_data_auth:/var/lib/postgresql/data/
     env_file:
       - ./auth-service/.env
-#    networks:
-#      - postgres
 
   nginx:
     image: nginx
@@ -52,7 +48,6 @@ services:
       - asm_pc_service
 
   pgadmin:
-    container_name: pgadmin
     image: dpage/pgadmin4:7.2
     environment:
       PGADMIN_DEFAULT_EMAIL: "iveninvala7@gmail.com"
@@ -62,14 +57,8 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     ports:
       - "5555:80"
-    networks:
-      - postgres
 
 volumes:
   postgres_data_auth:
   postgres_data_asm_pc:
   pgadmin-data:
-
-networks:
-  postgres:
-    driver: bridge

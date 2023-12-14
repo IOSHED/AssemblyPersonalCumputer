@@ -1,30 +1,30 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+
+from api import config
 from api.auth.urls import router as router_auth
 from api.db.db import Base
 
+# Import for alembic migrations
 _Base = Base
 
-
+# Init app
 app = FastAPI(
-    title="Auth",
-    openapi_url="/api/v1/auth/openapi.json",
-    docs_url="/api/v1/auth/docs"
+    title=config.NAME_SERVICE,
+    openapi_url=f"{config.PATH_SERVICE}/openapi.json",
+    docs_url=f"{config.PATH_SERVICE}/docs"
 )
 
+# All include routers
 app.include_router(
     router_auth,
-    prefix="/api/v1/auth",
+    prefix=config.PATH_SERVICE,
 )
 
-# All hosts that can access our api
-origins = [
-    "http://127.0.0.1:8080",
-]
-
+# All use middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=config.ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
     allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",

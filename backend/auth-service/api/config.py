@@ -4,6 +4,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+"""Base config"""
+VERSION_API = 1
+NAME_SERVICE = "Auth"
+PATH_SERVICE = f"api/v{VERSION_API}/auth"
+ORIGINS = [  # All hosts that can access our api
+    "http://127.0.0.1:8080",
+]
 
 """Data base"""
 POSTGRES_USER = os.environ.get("POSTGRES_USER")
@@ -14,11 +21,9 @@ POSTGRES_PORT = os.environ.get("POSTGRES_PORT")
 
 DATABASE_URL = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}/{POSTGRES_DB}"
 
-
 """Secret token"""
 SECRET_AUTH = os.environ.get("SECRET_AUTH")
 SECRET_VERIFICATION = os.environ.get("SECRET_VERIFICATION")
-
 
 """Lifetime"""
 COOKIE_MAX_EGE = 3600

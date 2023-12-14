@@ -5,5 +5,4 @@ from api import config
 cookie_transport = CookieTransport(
     cookie_max_age=config.COOKIE_MAX_EGE,
     cookie_name="bonds",
-    cookie_path="api/v1/auth/"
 )

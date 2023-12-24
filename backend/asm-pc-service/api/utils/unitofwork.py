@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Type
 
-from api.pc.repository import PCRepository, ComponentRepository, TypeComponentRepository
+from api.pc.repository import PCRepository
+from api.componet.repository import ComponentRepository, TypeComponentRepository
 from api.db.db import async_session_maker
 
 

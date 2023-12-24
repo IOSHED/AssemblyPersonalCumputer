@@ -2,8 +2,8 @@ from typing import Any
 
 from fastapi import APIRouter
 
-from api.pc.service import PCService, ComponentService, TypeComponentService
-from api.pc.shemas import PCSchema, PCSchemaAdd, ComponentSchemaAdd, TypeComponentSchemaAdd
+from api.pc.service import PCService
+from api.pc.shemas import PCSchema, PCSchemaAdd
 from api.utils.dependencies import UOWDep
 
 
@@ -20,21 +20,3 @@ async def assembly_pc(user_data_pc: PCSchemaAdd, uow: UOWDep) -> Any:
     except Exception as err:
         return {"type_error": "Unknown Error", "error": err}
     return new_pc
-
-
-@router.post("/component")
-async def create_component(component_add: ComponentSchemaAdd, uow: UOWDep) -> Any:
-    try:
-        id_new_component = await ComponentService.add_component(uow, component_add)
-    except Exception as err:
-        return {"type_error": "Unknown Error", "error": err}
-    return id_new_component
-
-
-@router.post("/type_component")
-async def create_type_component(type_component_add: TypeComponentSchemaAdd, uow: UOWDep) -> Any:
-    try:
-        id_new_type_component = await TypeComponentService.add_type_component(uow, type_component_add)
-    except Exception as err:
-        return {"type_error": "Unknown Error", "error": err}
-    return id_new_type_component

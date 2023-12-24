@@ -3,7 +3,7 @@ import requests
 from dataclasses import dataclass
 from typing import Any
 
-from api.pc.lib.parsers.parser import Parser
+from api.pkg.parsers.parser import Parser
 
 
 class ParserComponents(Parser):

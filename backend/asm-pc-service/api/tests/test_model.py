@@ -1,6 +1,8 @@
 
-from api.pc.model import TypeComponent, Component, PC
-from api.pc.shemas import TypeComponentSchema, ComponentSchema, PCSchema
+from api.pc.model import PC
+from api.componet.model import Component, TypeComponent
+from api.pc.shemas import PCSchema
+from api.componet.shemas import TypeComponentSchema, ComponentSchema
 
 
 def test_type_component():

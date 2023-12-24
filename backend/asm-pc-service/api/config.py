@@ -11,3 +11,17 @@ DB_USER = os.environ.get("DB_USER")
 DB_PASS = os.environ.get("DB_PASS")
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+
+URL_GET_CURRENT_USER = "http://localhost:8080/api/v1/auth-service/get-corrent-user"
+
+TYPE_COMPONENTS = [
+    "CPU",
+    "MEMORY",
+    "MOTHER_BOARD",
+    "GPU",
+    "POWER SUPPLIES",
+    "CASES",
+    "COOLING",
+    "SSD",
+    "HDD",
+]

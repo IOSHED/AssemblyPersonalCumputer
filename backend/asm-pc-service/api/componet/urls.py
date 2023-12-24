@@ -1,24 +1,100 @@
-from typing import Any
+from typing import Any, List
 
-from api.componet.service import ComponentService, TypeComponentService
-from api.componet.shemas import ComponentSchemaAdd, TypeComponentSchemaAdd
-from api.pc.urls import router
-from api.utils.dependencies import UOWDep
+from fastapi import APIRouter, Depends
+
+from api.componet.service import TypeComponentService
+from api.componet.shemas import TypeComponentSchema, TypeComponentSchemaChange, TypeComponentSchemaAdd, \
+    TypeComponentSchemaDelete
+from api.utils.dependencies import UOWDep, current_user
+
+router = APIRouter()
 
 
-@router.post("/component")
-async def create_component(component_add: ComponentSchemaAdd, uow: UOWDep) -> Any:
+@router.post("/all_type_components")
+async def create_all_type_components(uow: UOWDep, user=Depends(current_user)) -> Any:
     try:
-        id_new_component = await ComponentService.add_component(uow, component_add)
+        if not user.is_superuser:
+            return {"type_error": "Auth Error", "error": "current user is not superuser"}
+
+        await TypeComponentService.create_type_components(uow)
     except Exception as err:
         return {"type_error": "Unknown Error", "error": err}
-    return id_new_component
+    return None
 
 
-@router.post("/type_component")
-async def create_type_component(type_component_add: TypeComponentSchemaAdd, uow: UOWDep) -> Any:
+@router.delete("/all_type_components")
+async def delete_all_type_components(uow: UOWDep, user=Depends(current_user)) -> Any:
     try:
-        id_new_type_component = await TypeComponentService.add_type_component(uow, type_component_add)
+        if not user.is_superuser:
+            return {"type_error": "Auth Error", "error": "current user is not superuser"}
+
+        await TypeComponentService.delete_type_components(uow)
     except Exception as err:
         return {"type_error": "Unknown Error", "error": err}
-    return id_new_type_component
+    return None
+
+
+@router.get("/all_type_components", response_model=List[TypeComponentSchema])
+async def get_all_type_components(uow: UOWDep) -> Any:
+    try:
+        type_components = await TypeComponentService.get_all_type_components(uow)
+    except Exception as err:
+        return {"type_error": "Unknown Error", "error": err}
+    return type_components
+
+
+@router.get("/type_component", response_model=TypeComponentSchema)
+async def get_type_component(uow: UOWDep, type_components_id: int) -> Any:
+    try:
+        type_component = await TypeComponentService.get_type_component(uow, type_components_id)
+    except Exception as err:
+        return {"type_error": "Unknown Error", "error": err}
+    return type_component
+
+
+@router.patch("/type_component", response_model=TypeComponentSchema)
+async def patch_type_component(
+        uow: UOWDep,
+        type_components_id: int,
+        change_components: TypeComponentSchemaChange,
+        user=Depends(current_user)
+) -> Any:
+    try:
+        if not user.is_superuser:
+            return {"type_error": "Auth Error", "error": "current user is not superuser"}
+
+        type_component = await TypeComponentService.patch_type_component(uow, type_components_id, change_components)
+    except Exception as err:
+        return {"type_error": "Unknown Error", "error": err}
+    return type_component
+
+
+@router.post("/type_component", response_model=TypeComponentSchema)
+async def create_type_component(
+        uow: UOWDep,
+        new_type_components: TypeComponentSchemaAdd,
+        user=Depends(current_user)
+) -> Any:
+    try:
+        if not user.is_superuser:
+            return {"type_error": "Auth Error", "error": "current user is not superuser"}
+
+        type_component = await TypeComponentService.add_type_component(uow, new_type_components)
+    except Exception as err:
+        return {"type_error": "Unknown Error", "error": err}
+    return type_component
+
+
+@router.delete("/type_component")
+async def delete_type_component(
+        uow: UOWDep,
+        type_component_delete: TypeComponentSchemaDelete,
+        user=Depends(current_user)
+) -> Any:
+    try:
+        if not user.is_superuser:
+            return {"type_error": "Auth Error", "error": "current user is not superuser"}
+        type_component = await TypeComponentService.delete_type_component(uow, type_component_delete)
+    except Exception as err:
+        return {"type_error": "Unknown Error", "error": err}
+    return type_component

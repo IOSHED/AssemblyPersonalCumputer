@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from api.pc.urls import router as router_assembly_pc
+from api.componet.urls import router as router_component
 from api.db.db import Base
 
 _base = Base
@@ -16,6 +17,12 @@ app.include_router(
     router_assembly_pc,
     prefix="/api/v1/asm-pc",
     tags=["Assembly PC"],
+)
+
+app.include_router(
+    router_component,
+    prefix="/api/v1/asm-pc",
+    tags=["Components"],
 )
 
 # All hosts that can access our api

@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import AuthenticationBackend
 
@@ -7,7 +7,6 @@ from api.auth.models import User
 from api.auth.schemas import UserRead, UserCreate, UserUpdate
 from api.auth.strategy import get_jwt_strategy
 from api.auth.transport import cookie_transport
-
 
 router = APIRouter()
 
@@ -75,3 +74,9 @@ router.include_router(
     prefix="/users",
     tags=["Users"],
 )
+
+
+@router.get("/get-current-user")
+async def get_current_user(user: User = Depends(fastapi_users.current_user(active=True))):
+    """Getting current user for other service"""
+    return user

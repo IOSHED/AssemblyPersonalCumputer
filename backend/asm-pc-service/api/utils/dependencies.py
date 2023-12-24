@@ -7,4 +7,4 @@ from api import config
 from api.utils.unitofwork import IUnitOfWork, UnitOfWork
 
 UOWDep = Annotated[IUnitOfWork, Depends(UnitOfWork)]
-current_user = requests.post(config.URL_GET_CURRENT_USER).json()
+current_user = requests.get(config.URL_GET_CURRENT_USER).json()

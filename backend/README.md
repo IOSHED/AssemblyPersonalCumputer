@@ -33,3 +33,12 @@ Up:
 ```commandline
 alembic upgrade head 
 ```
+
+## TODO
+
+- add OAuth in auth-service
+- create python lib for packed services
+- add grafana
+- add ElasticSearcher
+- add RabbitMQ for cooperation services
+- loop refactoring

@@ -74,9 +74,3 @@ router.include_router(
     prefix="/users",
     tags=["Users"],
 )
-
-
-@router.get("/get-current-user")
-async def get_current_user(user: User = Depends(fastapi_users.current_user(active=True))):
-    """Getting current user for other service"""
-    return user

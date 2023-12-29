@@ -3,7 +3,7 @@ import requests
 from dataclasses import dataclass
 from typing import Any
 
-from api.pkg.parsers.parser import Parser
+from api.utils.parser import Parser
 
 
 class ParserComponents(Parser):
@@ -32,3 +32,4 @@ class ParserComponent(Parser):
 
     async def parse(self) -> Any:
         response = requests.get(self.url)
+

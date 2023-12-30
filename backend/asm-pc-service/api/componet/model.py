@@ -4,7 +4,7 @@ from sqlalchemy import Float, ForeignKey, String, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 
 from api.db.db import Base
-from api.componet.shemas import TypeComponentSchema, ComponentSchema
+from api.componet.shemas import ComponentSchema
 
 
 class Component(Base):
@@ -32,20 +32,4 @@ class Component(Base):
             type_component=self.type_component,
             name=self.name,
             specifications=self.specifications,
-        )
-
-
-class TypeComponent(Base):
-    __tablename__ = "type_component"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(255), unique=True)
-
-    def __repr__(self) -> str:
-        return f"TypeComponent(name={self.name!r})"
-
-    def to_read_model(self) -> TypeComponentSchema:
-        return TypeComponentSchema(
-            id=self.id,
-            name=self.name,
         )

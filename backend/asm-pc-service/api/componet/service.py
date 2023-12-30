@@ -6,12 +6,11 @@ from api import config
 from api.componet.shemas import TypeComponentSchemaAdd, ComponentSchemaAdd, TypeComponentSchemaChange, \
     TypeComponentSchemaDelete, TypeComponentSchema
 from api.utils.dependencies import UOWDep
-from api.utils.unitofwork import IUnitOfWork
 
 
 class ComponentService:
     @staticmethod
-    async def add_component(uow: IUnitOfWork, component: ComponentSchemaAdd) -> int:
+    async def add_component(uow: UOWDep, component: ComponentSchemaAdd) -> int:
         component_dict = component.model_dump()
         async with uow:
             print(component_dict)
@@ -22,7 +21,7 @@ class ComponentService:
 
 class TypeComponentService:
     @staticmethod
-    async def add_type_component(uow: UOWDep, type_component: TypeComponentSchemaAdd) -> int:
+    async def add_type_component(uow: UOWDep, type_component: TypeComponentSchemaAdd) -> TypeComponentSchema:
         type_component_dict = type_component.model_dump()
         async with uow:
             type_component_id = await uow.type_component.add_one(data=type_component_dict)
@@ -31,12 +30,17 @@ class TypeComponentService:
             return new_type_component
 
     @staticmethod
-    async def create_type_components(uow: UOWDep):
+    async def create_type_components(uow: UOWDep) -> List[TypeComponentSchema]:
         async with uow:
+            new_components = []
             for name in config.TYPE_COMPONENTS:
                 new_type_component = TypeComponentSchemaAdd(name=name).model_dump()
-                await uow.type_component.add_one(data=new_type_component)
+                new_id = await uow.type_component.add_one(data=new_type_component)
+                new_component = await uow.type_component.find_one(id=new_id)
+                new_components.append(new_component)
+
             await uow.commit()
+            return new_components
 
     @staticmethod
     async def delete_type_components(uow: UOWDep):

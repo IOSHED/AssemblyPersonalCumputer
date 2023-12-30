@@ -150,7 +150,7 @@ async def create_type_component(
         HTTPException: If no type components are found or if an internal server error occurs.
     """
     try:
-        type_component = await TypeComponentService.add_type_component(uow, new_type_components)
+        type_component = await TypeComponentService.create_type_component(uow, new_type_components)
         if not type_component:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No type component found")
         return type_component

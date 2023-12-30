@@ -3,6 +3,7 @@ from typing import List, Any
 from fastapi import HTTPException, APIRouter
 from starlette import status
 
+from api import config
 from api.type_componet.service import TypeComponentService
 from api.type_componet.shemas import TypeComponentSchemaAdd, TypeComponentSchemaChange, TypeComponentSchemaDelete, \
     TypeComponentSchema
@@ -10,6 +11,18 @@ from api.utils.dependencies import UOWDep
 
 
 router = APIRouter()
+
+
+@router.on_event("startup")
+async def startup_event():
+    if config.IS_RECREATE_TYPE_COMPONENTS:
+        await create_all_type_components()
+
+
+@router.on_event("shutdown")
+async def startup_event():
+    if config.IS_RECREATE_TYPE_COMPONENTS:
+        await delete_all_type_components()
 
 
 @router.post("/all_type_components", response_model=List[TypeComponentSchema], status_code=status.HTTP_201_CREATED)

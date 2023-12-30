@@ -42,7 +42,7 @@ class TypeComponentService:
         """
         async with uow:
             new_components = []
-            for name in config.TYPE_COMPONENTS:
+            for name in config.DEFAULT_TYPE_COMPONENTS:
                 new_type_component = TypeComponentSchemaAdd(name=name).model_dump()
                 new_id = await uow.type_component.add_one(data=new_type_component)
                 new_component = await uow.type_component.find_one(id=new_id)

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Any
 
-from sqlalchemy import insert, select, update, delete, and_
+from sqlalchemy import insert, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -64,5 +64,5 @@ class SQLAlchemyRepository(AbstractRepository):
         await self.session.execute(stmt)
 
     async def delete_one(self, **filter_by):
-        stmt = delete(self.model).where(and_(*[column == value for column, value in filter_by.items()]))
+        stmt = delete(self.model).filter_by(**filter_by)
         await self.session.execute(stmt)

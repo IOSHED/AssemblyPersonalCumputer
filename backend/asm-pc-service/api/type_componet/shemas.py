@@ -32,8 +32,8 @@ class TypeComponentSchemaDelete(pydantic.BaseModel):
         id (int, optional): The ID of the type component to be deleted. It should be an integer greater than 0.
         name (str, optional): The name of the type component to be deleted. It should be a string with a maximum length of 255 characters.
     """
-    id: Optional[int] = pydantic.Field(gt=0)
-    name: Optional[str] = pydantic.Field(max_length=255)
+    id: Optional[int] = pydantic.Field(gt=0, default=None)
+    name: Optional[str] = pydantic.Field(max_length=255, default=None)
 
 
 class TypeComponentSchema(pydantic.BaseModel):

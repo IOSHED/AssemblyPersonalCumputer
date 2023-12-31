@@ -72,8 +72,10 @@ class TypeComponentService:
             uow (UOWDep): The unit of work dependency.
             type_component_delete (TypeComponentSchemaDelete): The type component to delete.
         """
+        # Delete field if value is None
+        type_component_delete_dict = {k: v for k, v in type_component_delete.model_dump().items() if v is not None}
         async with uow:
-            await uow.type_component.delete_one(filter_by=type_component_delete.model_dump())
+            await uow.type_component.delete_one(**type_component_delete_dict)
             await uow.commit()
 
     @staticmethod

@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+
+from api import config
 from api.pc.urls import router as router_assembly_pc
 from api.componet.urls import router as router_component
 from api.type_componet.urls import router as router_type_component
@@ -8,9 +10,9 @@ from api.db.db import Base
 _base = Base
 
 app = FastAPI(
-    title="Assembly PC",
-    openapi_url="/api/v1/asm-pc/openapi.json",
-    docs_url="/api/v1/asm-pc/docs"
+    title=config.NAME_SERVICE,
+    openapi_url=f"{config.PATH_SERVICE}/openapi.json",
+    docs_url=f"{config.PATH_SERVICE}/docs"
 )
 
 
@@ -32,14 +34,9 @@ app.include_router(
     tags=["Type Components"],
 )
 
-# All hosts that can access our api
-origins = [
-    "http://127.0.0.1:8080",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=config.ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
     allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",

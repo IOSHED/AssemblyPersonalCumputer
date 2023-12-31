@@ -3,7 +3,6 @@ from typing import List, Any
 from fastapi import HTTPException, APIRouter
 from starlette import status
 
-from api import config
 from api.type_componet.service import TypeComponentService
 from api.type_componet.shemas import TypeComponentSchemaAdd, TypeComponentSchemaChange, TypeComponentSchemaDelete, \
     TypeComponentSchema
@@ -13,16 +12,16 @@ from api.utils.dependencies import UOWDep
 router = APIRouter()
 
 
-@router.on_event("startup")
-async def startup_event():
-    if config.IS_RECREATE_TYPE_COMPONENTS:
-        await create_all_type_components()
-
-
-@router.on_event("shutdown")
-async def startup_event():
-    if config.IS_RECREATE_TYPE_COMPONENTS:
-        await delete_all_type_components()
+# @router.on_event("startup")
+# async def startup_event():
+#     if config.IS_RECREATE_TYPE_COMPONENTS:
+#         await create_all_type_components()
+#
+#
+# @router.on_event("shutdown")
+# async def shutdown_event():
+#     if config.IS_RECREATE_TYPE_COMPONENTS:
+#         await delete_all_type_components()
 
 
 @router.post("/all_type_components", response_model=List[TypeComponentSchema], status_code=status.HTTP_201_CREATED)
@@ -48,7 +47,7 @@ async def create_all_type_components(uow: UOWDep) -> List[TypeComponentSchema]:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Server Error")
 
 
-@router.delete("/all_type_components", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/all_type_components", status_code=status.HTTP_200_OK)
 async def delete_all_type_components(uow: UOWDep):
     """
     Deletes all type components.
@@ -171,7 +170,7 @@ async def create_type_component(
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Server Error")
 
 
-@router.delete("/type_component", response_model=TypeComponentSchema, status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/type_component", status_code=status.HTTP_200_OK)
 async def delete_type_component(
         uow: UOWDep,
         type_component_delete: TypeComponentSchemaDelete,
@@ -187,11 +186,9 @@ async def delete_type_component(
         None
 
     Raises:
-        HTTPException: If no type components are found or if an internal server error occurs.
+        HTTPException: if an internal server error occurs.
     """
     try:
-        type_component = await TypeComponentService.delete_type_component(uow, type_component_delete)
-        if not type_component:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No type component found")
+        await TypeComponentService.delete_type_component(uow, type_component_delete)
     except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Server Error")

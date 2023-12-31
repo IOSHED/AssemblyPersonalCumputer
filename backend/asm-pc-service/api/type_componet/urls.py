@@ -1,36 +1,30 @@
-from typing import List, Any
+from __future__ import annotations
 
-from fastapi import HTTPException, APIRouter
+from typing import List, Any, Dict
+
+from fastapi import HTTPException, APIRouter, Depends
 from starlette import status
 
 from api.type_componet.service import TypeComponentService
 from api.type_componet.shemas import TypeComponentSchemaAdd, TypeComponentSchemaChange, TypeComponentSchemaDelete, \
     TypeComponentSchema
 from api.utils.dependencies import UOWDep
-
+from api.utils.users import get_active_user, get_superuser
 
 router = APIRouter()
 
 
-# @router.on_event("startup")
-# async def startup_event():
-#     if config.IS_RECREATE_TYPE_COMPONENTS:
-#         await create_all_type_components()
-#
-#
-# @router.on_event("shutdown")
-# async def shutdown_event():
-#     if config.IS_RECREATE_TYPE_COMPONENTS:
-#         await delete_all_type_components()
-
-
 @router.post("/all_type_components", response_model=List[TypeComponentSchema], status_code=status.HTTP_201_CREATED)
-async def create_all_type_components(uow: UOWDep) -> List[TypeComponentSchema]:
+async def create_all_type_components(
+        uow: UOWDep,
+        _user: Dict[str, Any] = Depends(get_superuser),
+) -> List[TypeComponentSchema]:
     """
     Creates all the component types specified in config.py.
 
     Args:
         uow (UOWDep): The unit of work dependency.
+        _user (Dict[str, Any]): Get current superuser.
 
     Returns:
         List[TypeComponentSchema]: Returns list new creating type components.
@@ -48,12 +42,16 @@ async def create_all_type_components(uow: UOWDep) -> List[TypeComponentSchema]:
 
 
 @router.delete("/all_type_components", status_code=status.HTTP_200_OK)
-async def delete_all_type_components(uow: UOWDep):
+async def delete_all_type_components(
+        uow: UOWDep,
+        _user: Dict[str, Any] = Depends(get_superuser),
+):
     """
     Deletes all type components.
 
     Args:
         uow (UOWDep): The unit of work dependency.
+        _user (Dict[str, Any]): Get current superuser.
 
     Returns:
         None
@@ -68,12 +66,16 @@ async def delete_all_type_components(uow: UOWDep):
 
 
 @router.get("/all_type_components", response_model=List[TypeComponentSchema], status_code=status.HTTP_200_OK)
-async def get_all_type_components(uow: UOWDep) -> List[TypeComponentSchema]:
+async def get_all_type_components(
+        uow: UOWDep,
+        _user: Dict[str, Any] = Depends(get_active_user),
+) -> List[TypeComponentSchema]:
     """
     Retrieves all type components.
 
     Args:
         uow (UOWDep): The unit of work dependency.
+        _user (Dict[str, Any]): Get current active user.
 
     Returns:
         List[TypeComponentSchema]: Returns all list of type components.
@@ -91,13 +93,18 @@ async def get_all_type_components(uow: UOWDep) -> List[TypeComponentSchema]:
 
 
 @router.get("/type_component", response_model=TypeComponentSchema, status_code=status.HTTP_200_OK)
-async def get_type_component(uow: UOWDep, type_components_id: int) -> Any:
+async def get_type_component(
+        uow: UOWDep,
+        type_components_id: int,
+        _user: Dict[str, Any] = Depends(get_active_user),
+) -> Any:
     """
     Get one type of component by its id.
 
     Args:
         uow (UOWDep): The unit of work dependency.
         type_components_id (int): id of the component type.
+        _user (Dict[str, Any]): Get current active user.
 
     Returns:
         TypeComponentSchema: Returns of the type component.
@@ -119,6 +126,7 @@ async def patch_type_component(
         uow: UOWDep,
         type_components_id: int,
         change_components: TypeComponentSchemaChange,
+        _user: Dict[str, Any] = Depends(get_superuser),
 ) -> Any:
     """
     Changes the data about the component type by its id.
@@ -127,6 +135,7 @@ async def patch_type_component(
         uow (UOWDep): The unit of work dependency.
         type_components_id (int): id of the component type.
         change_components (TypeComponentSchemaChange): fields for which the component type will change.
+        _user (Dict[str, Any]): Get current superuser.
 
     Returns:
         TypeComponentSchema: Returns of the type component.
@@ -147,13 +156,15 @@ async def patch_type_component(
 async def create_type_component(
         uow: UOWDep,
         new_type_components: TypeComponentSchemaAdd,
+        _user: Dict[str, Any] = Depends(get_superuser),
 ) -> Any:
     """
     Creates a new type of component.
 
     Args:
         uow (UOWDep): The unit of work dependency.
-        new_type_components (TypeComponentSchemaAdd): data to add new type component
+        new_type_components (TypeComponentSchemaAdd): data to add new type component.
+        _user (Dict[str, Any]): Get current superuser.
 
     Returns:
         TypeComponentSchema: Returns of the type component.
@@ -174,13 +185,15 @@ async def create_type_component(
 async def delete_type_component(
         uow: UOWDep,
         type_component_delete: TypeComponentSchemaDelete,
+        _user: Dict[str, Any] = Depends(get_superuser),
 ) -> Any:
     """
     Delete type of component by int name or id.
 
     Args:
         uow (UOWDep): The unit of work dependency.
-        type_component_delete (TypeComponentSchemaDelete): data to delete type component
+        type_component_delete (TypeComponentSchemaDelete): data to delete type component.
+        _user (Dict[str, Any]): Get current superuser.
 
     Returns:
         None

@@ -9,7 +9,7 @@ from api.type_componet.service import TypeComponentService
 from api.type_componet.shemas import TypeComponentSchemaAdd, TypeComponentSchemaChange, TypeComponentSchemaDelete, \
     TypeComponentSchema
 from api.utils.dependencies import UOWDep
-from api.utils.users import get_active_user, get_superuser
+from api.utils.users import get_superuser
 
 router = APIRouter()
 
@@ -66,16 +66,12 @@ async def delete_all_type_components(
 
 
 @router.get("/all_type_components", response_model=List[TypeComponentSchema], status_code=status.HTTP_200_OK)
-async def get_all_type_components(
-        uow: UOWDep,
-        _user: Dict[str, Any] = Depends(get_active_user),
-) -> List[TypeComponentSchema]:
+async def get_all_type_components(uow: UOWDep) -> List[TypeComponentSchema]:
     """
     Retrieves all type components.
 
     Args:
         uow (UOWDep): The unit of work dependency.
-        _user (Dict[str, Any]): Get current active user.
 
     Returns:
         List[TypeComponentSchema]: Returns all list of type components.
@@ -96,7 +92,6 @@ async def get_all_type_components(
 async def get_type_component(
         uow: UOWDep,
         type_components_id: int,
-        _user: Dict[str, Any] = Depends(get_active_user),
 ) -> Any:
     """
     Get one type of component by its id.
@@ -104,7 +99,6 @@ async def get_type_component(
     Args:
         uow (UOWDep): The unit of work dependency.
         type_components_id (int): id of the component type.
-        _user (Dict[str, Any]): Get current active user.
 
     Returns:
         TypeComponentSchema: Returns of the type component.

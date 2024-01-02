@@ -33,3 +33,5 @@ class Component(Base):
             name=self.name,
             specifications=self.specifications,
         )
+
+

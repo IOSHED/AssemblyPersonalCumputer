@@ -41,4 +41,3 @@ IS_RECREATE_TYPE_COMPONENTS = True
 
 """Auth"""
 URL_GET_CURRENT_USER = "http://auth_service:8000/api/v1/auth/users/me"
-
